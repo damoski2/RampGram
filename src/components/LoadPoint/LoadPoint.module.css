@@ -1,0 +1,106 @@
+.app_Auth{
+    background-color: #FAFAFA;
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 14px;
+}
+
+.app_PhoneImg{
+    max-height: 600px;
+}
+
+.app_Form{
+    width: 45%;
+    align-self: center;
+}
+
+.app_Form form{
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    border: .1px solid #DBDBDB;
+    padding: 25px;
+}
+
+.app_igLogo{
+    object-fit: contain;
+    max-width: 280px;
+    padding-bottom: 10px;
+    align-self: center;
+}
+
+.app_Form form input{
+    border: .1px solid #DBDBDB;
+    margin-bottom: 10px;
+    height: 35px;
+}
+
+.app_Form form input:focus{
+    outline: none;
+}
+
+.toggleSignOpt{
+    margin-top: 10px;
+    background-color: #fff;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border: .1px solid #DBDBDB;
+}
+
+.app_Span{
+    display: inline;
+    color: #0095F6;
+    cursor: pointer;
+}
+
+.app_login{
+    border: none;
+    height: 30px;
+    color: #fff;
+    background-color: #0095F6;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.app_SignUpInfo{
+    color: #8E8E95;
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0px 0;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+@media(max-width:992px){
+    .app_Auth{
+        width: 70%;
+    }
+}
+
+@media(max-width:768px){
+    .app_Auth{
+        width: 80%;
+        align-items: center;
+        align-content: center;
+       
+    }
+
+    .app_PhoneImg{
+        display: none;
+    }
+
+    .app_Form{
+        width: 70%;
+        margin-top: 50%;
+    }
+}
+
+@media(max-width: 540px){
+    .app_Form{
+        width: 95%;
+    }
+}

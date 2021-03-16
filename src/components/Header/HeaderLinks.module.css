@@ -1,0 +1,14 @@
+.linkCnt{
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    color: #492626;
+}
+
+.post_avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    align-items: center ;
+}

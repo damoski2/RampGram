@@ -1,0 +1,41 @@
+.app_headerCnt{
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid lightgray;
+}
+
+
+.app_header{
+    width: 68%;
+    margin: auto;
+    object-fit: contain;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  
+  .app_headerImage{
+    object-fit: contain;
+  }
+
+  .app_headerLink{
+    object-fit: contain;
+    align-self: center;
+  }
+
+  @media(max-width:768px){
+    .app_loginCnt{
+      display: none;
+    }
+  }
+
+  @media(max-width:650px){
+    .app_header{
+      width: 90%;
+    }
+  }
+
+ 

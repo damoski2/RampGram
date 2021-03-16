@@ -1,0 +1,29 @@
+*{
+  margin: 0;
+}
+
+.App{
+  background: #fafafa;
+}
+
+.app_posts{
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.app_postRight{
+  margin-left: 20px;
+}
+
+@media(max-width:992px){
+  .app_postRight{
+    display: none;
+  }
+}
+
+@media(max-width:540px){
+  .app_posts{
+    padding: 0;
+  }
+}
