@@ -7,7 +7,7 @@ const firebaseApp = firebase.initializeApp({
     projectId: "##classified",
     storageBucket: "##classified",
     messagingSenderId: "##classified",
-    appId: "1:21666663664:web:##classified",
+    appId: "##classified",
     measurementId: "##classified"
 });
 
