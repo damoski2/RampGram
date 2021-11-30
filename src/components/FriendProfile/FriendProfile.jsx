@@ -18,6 +18,7 @@ const FriendProfile = ({ post: { post }, user }) => {
   const [numberPosts, setNumberPosts] = useState(0);
   const [numberFollowing, setNumberFollowing] = useState(0);
   const [followers, setFollowers] = useState([]);
+  const [arr,setArr] = useState([]);
 
 
   //Check if current user is visiting his page
@@ -35,7 +36,7 @@ const FriendProfile = ({ post: { post }, user }) => {
           }))
         );
       });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if(user){
@@ -90,11 +91,47 @@ const FriendProfile = ({ post: { post }, user }) => {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
+
+    //Handle Update Accross all Posts
+
     setToggleFollowBtn(true);
   };
 
   //Handle Unfollowing Logic
   const handleUnFollow = () => {
+    //Handle Update Accross all Posts
+    db.collection('users').doc(actualUser).collection('Followers').onSnapshot(snapshot=>{
+      snapshot.docs.map(doc=> {
+        console.log(doc.data().followerID)
+        setArr(arr=> ([...arr, doc.data().followerID]))
+      })
+    })
+    setToggleFollowBtn(false);
+  };
+
+
+  useEffect(()=>{
+    function setPost(){
+      if(arr.length>0){
+        arr.map((item,index)=>{
+          if(item == user.uid){
+            setArr(arr=> arr.splice(index,1))
+          }
+        })
+        assigndb()
+      }
+    }
+    setPost()
+  },[arr])
+
+  function assigndb(){
+    if(arr.length>0){
+      db.collection('posts').where('userID','==',actualUser).get().then(snapshot => {
+        snapshot.forEach(doc=>{
+          console.log(doc.data())
+        })
+      })
+    }
     var signedAcct = db.collection("users").doc(actualUser).collection("Followers").where("followerID","==",user.uid);
     signedAcct.get().then((querySnapshot)=>{
       querySnapshot.forEach((doc)=>{
@@ -108,10 +145,7 @@ const FriendProfile = ({ post: { post }, user }) => {
         doc.ref.delete();
       })
     })
-
-    setToggleFollowBtn(false);
-  };
-
+  }
 
   //Code to make sure to get appropriate following status
   useEffect(() => {
@@ -123,7 +157,7 @@ const FriendProfile = ({ post: { post }, user }) => {
           setFollowers(snapshot.docs.map((doc) => doc.data().by));
         });
     }
-  });
+  },[actualUser])
 
   useEffect(() => {
     if (user) {
@@ -145,7 +179,7 @@ const FriendProfile = ({ post: { post }, user }) => {
         setNumberFollowing(snapshot.size)
       })
     }
-  });
+  },[user, actualUser]);
 
 
 

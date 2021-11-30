@@ -63,8 +63,8 @@ const UserProfile = (props) => {
       })
     );
   }, [uniqueUserPost]);
-  console.log(uniqueUserPost);
-  console.log(postsImages);
+  //console.log(uniqueUserPost);
+  //console.log(postsImages);
 
   //Check for updates in ProfileImage
   useEffect(() => {
@@ -73,7 +73,6 @@ const UserProfile = (props) => {
     }
     if (user) {
       let signedUser = firebase.auth().currentUser;
-      console.log(signedUser);
       user["photoURL"] == null &&
         signedUser.updateProfile({
           photoURL:

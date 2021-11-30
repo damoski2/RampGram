@@ -11,6 +11,34 @@ const ImageUpload = ({ username, user }) => {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [profilePic , setProfilePic] = useState('');
+  const [actualUser, setActualUser] = useState('')
+  const [users, setUsers] = useState([]);
+  const [followers, setFollowers] = useState([])
+  const [userRef, setUserRef] = useState([]);
+
+  useEffect(() => {
+    db.collection("users")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        //Code fire to get actual profile in the cloud firestore for following and friendship
+        setUsers(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            user: doc.data(),
+          }))
+        );
+      });
+  }, []);
+
+  useEffect(()=>{
+    if(user){
+     users.map((person)=>{
+       if(person["user"].username == user.displayName ){
+        setActualUser(person.id)
+       }
+     })
+    }
+   })
 
 
   //Profile img logic
@@ -20,7 +48,26 @@ const ImageUpload = ({ username, user }) => {
       setProfilePic(signedUser['photoURL']);
     }
   });
-  console.log(profilePic)
+  //console.log(profilePic)
+
+  useEffect(()=>{
+   if(actualUser){
+    db.collection('users').doc(actualUser).collection('Followers').onSnapshot(snapshot=>{
+      setFollowers(
+        snapshot.docs.map(doc=> ( doc.data().followerID ))
+      )
+    })
+   }
+  },[actualUser])
+
+  useEffect(() => {
+    if(actualUser){
+      setUserRef(
+        db.collection('users').doc(actualUser).id
+      )
+    }
+  },[actualUser])
+
 
 
   //Handle Selecting of files
@@ -63,12 +110,14 @@ const ImageUpload = ({ username, user }) => {
                       username: username,
                       profilePic: profilePic,
                       route: `/${username}`,
-                      userID: user.uid
+                      userID: user.uid,
+                      followers: followers,
+                      userRef: userRef,
                   });
                   setProgress(0);
                   setCaption("")
                   setImage(null);
-              })
+              }).catch(err=> console.log(err))
         }
     )
   }

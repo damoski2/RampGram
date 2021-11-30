@@ -27,6 +27,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [appUsers, setAppUsers] = useState([]);
   const [uniqueUserPost, setUniqueUserPosts] = useState([]);
+  const [otherUserPost, setOtherUserPost] = useState([]);
   const [comments, setComments] = useState([]);
   const [open, setOpen] = useState(false);
   const [openSignIn, setOpenSignIn] = useState(false);
@@ -34,11 +35,28 @@ function App() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
+  const [followingId, setFollowingId] = useState([]);
+  const [friendArr, setFriendArr] = useState({});
+  const [actualUser, setActualUser] = useState('')
+  const [users, setUsers] = useState([]);
 
-  const [pre_router, setPre_Router] = useState([]);
-  var [rewarded, setRewarded] = useState([]);
+  useEffect(() => {
+    db.collection("users")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        //Code fire to get actual profile in the cloud firestore for following and friendship
+        setUsers(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            user: doc.data(),
+          }))
+        );
+      });
+  }, []);
 
   var routingfile = [];
+  var arr = []
+
 
   //Checking for Users auth state
   useEffect(() => {
@@ -56,7 +74,7 @@ function App() {
             setUniqueUserPosts(
               snapshot.docs
                 .filter(
-                  (doc) => doc.data().username == signedUser["displayName"]
+                  (doc) => doc.data().username === signedUser["displayName"]
                 )
                 .map((doc) => ({
                   id: doc.id,
@@ -64,6 +82,7 @@ function App() {
                 }))
             );
           });
+
       } else {
         //User has logged out
         setUser(null);
@@ -74,6 +93,24 @@ function App() {
       unsubscribe();
     };
   }, [user, username]);
+
+
+  useEffect(()=>{
+  var signedUser = firebase.auth().currentUser;
+  if(signedUser){
+    db.collection('posts').orderBy('timestamp','desc')
+    .onSnapshot((snapshot=>{
+          snapshot.docs.map(doc=>{
+              const query1 = db.collection('users').doc(doc.data().userRef).collection('Followers').where('followerID','==',signedUser['uid']).get()
+              query1.then(querySnapshot=>{
+                querySnapshot.forEach(doc2=>{
+                    setOtherUserPost(otherUserPost=> ([...otherUserPost, { id: doc.id, post: doc.data() }]))
+                })
+              })
+          })
+    }))
+  }
+  },[user])
 
   /*Material UI modal Styling*/
   function getModalStyle() {
@@ -127,13 +164,10 @@ function App() {
       });
   }, []);
 
-  console.log(uniqueUserPost);
+  //console.log(uniqueUserPost);
 
   //testing current user
-  useEffect(() => {
-    var users = firebase.auth().currentUser;
-    console.log(users);
-  });
+
 
   return (
     <Router>
@@ -145,7 +179,7 @@ function App() {
       />
 
       {posts.map((post) => {
-        if (!(routingfile.indexOf(post.post.route) > -1)) {
+        if (routingfile.indexOf(post.post.route) < 0) {
           routingfile.push(post.post.route);
           return (
             <Route
@@ -153,6 +187,14 @@ function App() {
               render={(props) => <FriendProfile post={post} user={user} />}
             />
           );
+          //
+          var snapshot = db.collection('users').doc(post.post.userID).collection('Followers').where('followerID', '==' ,user.uid).get()
+          if(snapshot.empty){
+            console.log(snapshot)
+          }else{
+           
+          }
+
         }
       })}
 
@@ -181,30 +223,6 @@ function App() {
           exact
           render={(props) => (
             <div className="App">
-              {/*SignUp modal*/}
-              {/*<SignUp
-            open={open}
-            setOpen={setOpen}
-            email={email}
-            password={password}
-            setPassword={setPassword}
-            setEmail={setEmail}
-            username={username}
-            setUsername={setUsername}
-            user={user}
-          />*/}
-
-              {/*SignIn Modal*/}
-              {/*<SignIn
-            email={email}
-            password={password}
-            setPassword={setPassword}
-            setEmail={setEmail}
-            openSignIn={openSignIn}
-            setOpenSignIn={setOpenSignIn}
-            user={user}
-          />*/}
-
               {/*Header*/}
               <Header
                 user={user}
@@ -215,18 +233,23 @@ function App() {
               {/*All app Posts*/}
               <div className="app_posts">
                 <div className="app_postLeft">
-                  {posts.map(({ id, post }) => (
-                    <Post
-                      key={id}
-                      PostId={id}
-                      user={user}
-                      username={post.username}
-                      caption={post.caption}
-                      imageUrl={post.imageUrl}
-                      profilePic={post.profilePic}
-                      route={post.route}
-                    />
-                  ))}
+                  {otherUserPost.map((main) => {
+                    if(main!==undefined) {
+                      return(
+                        <Post
+                          key={main.id}
+                          PostId={main.id}
+                          user={user}
+                          username={main.post.username}
+                          caption={main.post.caption}
+                          imageUrl={main.post.imageUrl}
+                          profilePic={main.post.profilePic}
+                          route={main.post.route}
+                        />
+                      )
+                    }
+                  }
+                  )}
                   {/*Posts*/}
                 </div>
 

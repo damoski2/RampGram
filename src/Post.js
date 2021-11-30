@@ -31,7 +31,6 @@ const Post = ({ username, caption, imageUrl, PostId, user, profilePic, route }) 
           setComments(snapshot.docs.map((doc) => doc.data()));
         });
     }
-
     return () => {
       unsubscribe();
     };
