@@ -35,9 +35,6 @@ function App() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
-  const [followingId, setFollowingId] = useState([]);
-  const [friendArr, setFriendArr] = useState({});
-  const [actualUser, setActualUser] = useState('')
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -55,16 +52,12 @@ function App() {
   }, []);
 
   var routingfile = [];
-  var arr = []
-
-
   //Checking for Users auth state
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       var signedUser = firebase.auth().currentUser;
       if (authUser) {
         //User has logged in...
-        console.log(authUser);
         setUser(authUser);
 
         //Set Posts for "Signed in User Only"
@@ -96,6 +89,7 @@ function App() {
 
 
   useEffect(()=>{
+  setOtherUserPost([])
   var signedUser = firebase.auth().currentUser;
   if(signedUser){
     db.collection('posts').orderBy('timestamp','desc')

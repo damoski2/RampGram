@@ -99,39 +99,7 @@ const FriendProfile = ({ post: { post }, user }) => {
 
   //Handle Unfollowing Logic
   const handleUnFollow = () => {
-    //Handle Update Accross all Posts
-    db.collection('users').doc(actualUser).collection('Followers').onSnapshot(snapshot=>{
-      snapshot.docs.map(doc=> {
-        console.log(doc.data().followerID)
-        setArr(arr=> ([...arr, doc.data().followerID]))
-      })
-    })
-    setToggleFollowBtn(false);
-  };
 
-
-  useEffect(()=>{
-    function setPost(){
-      if(arr.length>0){
-        arr.map((item,index)=>{
-          if(item == user.uid){
-            setArr(arr=> arr.splice(index,1))
-          }
-        })
-        assigndb()
-      }
-    }
-    setPost()
-  },[arr])
-
-  function assigndb(){
-    if(arr.length>0){
-      db.collection('posts').where('userID','==',actualUser).get().then(snapshot => {
-        snapshot.forEach(doc=>{
-          console.log(doc.data())
-        })
-      })
-    }
     var signedAcct = db.collection("users").doc(actualUser).collection("Followers").where("followerID","==",user.uid);
     signedAcct.get().then((querySnapshot)=>{
       querySnapshot.forEach((doc)=>{
@@ -145,7 +113,10 @@ const FriendProfile = ({ post: { post }, user }) => {
         doc.ref.delete();
       })
     })
-  }
+  
+    setToggleFollowBtn(false);
+  };
+
 
   //Code to make sure to get appropriate following status
   useEffect(() => {
