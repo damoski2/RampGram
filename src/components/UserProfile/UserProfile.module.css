@@ -20,6 +20,20 @@
     border-bottom: .1px solid #DBDBDB;
 }
 
+.editBtn{
+    margin-left: 2em;
+    height: fit-content;
+    padding: 5px 15px;
+    background-color: #0095F6;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    text-decoration: none;
+}
+
 .profileImg{
     max-width: 152px;
     max-height: 150px;

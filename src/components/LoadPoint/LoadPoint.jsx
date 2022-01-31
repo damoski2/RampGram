@@ -19,9 +19,24 @@ const LoadPoint = ({
   const [toggleAuth, setToggleAuth] = useState(true);
 
   //function to encode username to a special unique version
-  const makeUniqueUsername = ()=>{
-    // Code to be written in the near future
 
+
+  const makeUniqueUsername = (_username)=>{
+    // Code to be written in the near future
+    let len = _username.length;
+    let charNum = _username.charCodeAt(Math.floor((Math.random()*len)));
+    let symbols = ['-','.','_','*']
+    let sign = symbols[Math.floor(Math.random()*symbols.length)]
+    let radNum = Math.floor(Math.random() * len)+1
+    let arr = _username.split('')
+    arr.splice(radNum, 0, sign)
+    arr.splice(radNum, 0, charNum.toString())
+    let name = arr.join('')
+    name = `@${name}`
+    return name
+
+    //let result = `@${.splice(Math.floor(Math.random()*len)+1,0,charNum.toString()).join('')}`
+    //console.log(result);
   }
 
   //SignUp Auth
@@ -31,15 +46,18 @@ const LoadPoint = ({
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
                                                                                          //Might Give errors in future cos "return" keyword was removed
+        let Uinquename = makeUniqueUsername(username);
          authUser.user.updateProfile({                                   
-          displayName: username,
+          displayName: Uinquename,
         });
+
+        
       
         db.collection("users").add({
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           id: authUser.user.uid,
-          username:username,
-          uniqueRoute: `/${username}`,
+          username: Uinquename,
+          uniqueRoute: `/${Uinquename}`,
           Following: 0
         })
       })

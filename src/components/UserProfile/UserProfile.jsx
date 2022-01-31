@@ -4,7 +4,7 @@ import { Header, LoadPoint } from "../imports";
 import { db, auth, storage } from "../../config/firebase";
 import Avatar from "@material-ui/core/Avatar";
 import firebase from "firebase";
-
+import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -241,6 +241,9 @@ const UserProfile = (props) => {
               <div className={style.innerStats}>
                 <div className={style.followStats}>
                   <h3>{user.displayName}</h3>
+                  <Link to={`/edit/profile/${user.uid}`} className={style.editBtn} >
+                    Edit Profile
+                  </Link>
                 </div>
                 <div className={style.followProf}>
                   <p>

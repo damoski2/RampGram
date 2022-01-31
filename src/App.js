@@ -8,17 +8,17 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { Button, Input } from "@material-ui/core";
 import InstagramEmbed from "react-instagram-embed";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 //Component Imports
 import {
-  SignIn,
-  SignUp,
   UploadPost,
   Header,
   LoadPoint,
   UserProfile,
   FriendProfile,
+  ChatPage,
+  CreateProfile
 } from "./components/imports";
 
 function App() {
@@ -75,7 +75,6 @@ function App() {
                 }))
             );
           });
-
       } else {
         //User has logged out
         setUser(null);
@@ -87,24 +86,32 @@ function App() {
     };
   }, [user, username]);
 
-
-  useEffect(()=>{
-  setOtherUserPost([])
-  var signedUser = firebase.auth().currentUser;
-  if(signedUser){
-    db.collection('posts').orderBy('timestamp','desc')
-    .onSnapshot((snapshot=>{
-          snapshot.docs.map(doc=>{
-              const query1 = db.collection('users').doc(doc.data().userRef).collection('Followers').where('followerID','==',signedUser['uid']).get()
-              query1.then(querySnapshot=>{
-                querySnapshot.forEach(doc2=>{
-                    setOtherUserPost(otherUserPost=> ([...otherUserPost, { id: doc.id, post: doc.data() }]))
-                })
-              })
-          })
-    }))
-  }
-  },[user])
+  useEffect(() => {
+    setOtherUserPost([]);
+    var signedUser = firebase.auth().currentUser;
+    if (signedUser) {
+      db.collection("posts")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          snapshot.docs.map((doc) => {
+            const query1 = db
+              .collection("users")
+              .doc(doc.data().userRef)
+              .collection("Followers")
+              .where("followerID", "==", signedUser["uid"])
+              .get();
+            query1.then((querySnapshot) => {
+              querySnapshot.forEach((doc2) => {
+                setOtherUserPost((otherUserPost) => [
+                  ...otherUserPost,
+                  { id: doc.id, post: doc.data() },
+                ]);
+              });
+            });
+          });
+        });
+    }
+  }, [user]);
 
   /*Material UI modal Styling*/
   function getModalStyle() {
@@ -158,10 +165,6 @@ function App() {
       });
   }, []);
 
-  //console.log(uniqueUserPost);
-
-  //testing current user
-
 
   return (
     <Router>
@@ -178,23 +181,32 @@ function App() {
           return (
             <Route
               path={post.post.route}
-              render={(props) => <FriendProfile post={post} user={user} />}
+              render={(props) =>
+                user ? (
+                  <FriendProfile post={post} user={user} />
+                ) : (
+                  <Redirect to="/auth" />
+                )
+              }
             />
           );
           //
-          var snapshot = db.collection('users').doc(post.post.userID).collection('Followers').where('followerID', '==' ,user.uid).get()
-          if(snapshot.empty){
-            console.log(snapshot)
-          }else{
-           
+          var snapshot = db
+            .collection("users")
+            .doc(post.post.userID)
+            .collection("Followers")
+            .where("followerID", "==", user.uid)
+            .get();
+          if (snapshot.empty) {
+            console.log(snapshot);
+          } else {
           }
-
         }
       })}
-
+      {/* 
       <Route
         path="/auth"
-        render={(props) => (
+        render={(props) => !user && (
           <LoadPoint
             open={open}
             setOpen={setOpen}
@@ -209,9 +221,16 @@ function App() {
             user={user}
           />
         )}
+      /> */}
+
+      <Route
+        path="/chat/:recieverId"
+        render={(props) => users&&<ChatPage user={user} users={users} /> }
       />
 
-      {user ? (
+      <Route path="/edit/profile/:userId" render={(props)=> user&& <CreateProfile user={user} /> } />
+
+      {user? (
         <Route
           path="/"
           exact
@@ -227,9 +246,9 @@ function App() {
               {/*All app Posts*/}
               <div className="app_posts">
                 <div className="app_postLeft">
-                  {otherUserPost.map((main) => {
-                    if(main!==undefined) {
-                      return(
+                  {posts.map((main) => {
+                    if (main !== undefined) {
+                      return (
                         <Post
                           key={main.id}
                           PostId={main.id}
@@ -240,10 +259,9 @@ function App() {
                           profilePic={main.post.profilePic}
                           route={main.post.route}
                         />
-                      )
+                      );
                     }
-                  }
-                  )}
+                  })}
                   {/*Posts*/}
                 </div>
 

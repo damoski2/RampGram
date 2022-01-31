@@ -13,7 +13,6 @@ const ImageUpload = ({ username, user }) => {
   const [profilePic , setProfilePic] = useState('');
   const [actualUser, setActualUser] = useState('')
   const [users, setUsers] = useState([]);
-  const [followers, setFollowers] = useState([])
   const [userRef, setUserRef] = useState([]);
 
   useEffect(() => {
@@ -49,16 +48,6 @@ const ImageUpload = ({ username, user }) => {
     }
   });
   //console.log(profilePic)
-
-  useEffect(()=>{
-   if(actualUser){
-    db.collection('users').doc(actualUser).collection('Followers').onSnapshot(snapshot=>{
-      setFollowers(
-        snapshot.docs.map(doc=> ( doc.data().followerID ))
-      )
-    })
-   }
-  },[actualUser])
 
   useEffect(() => {
     if(actualUser){
@@ -111,7 +100,6 @@ const ImageUpload = ({ username, user }) => {
                       profilePic: profilePic,
                       route: `/${username}`,
                       userID: user.uid,
-                      followers: followers,
                       userRef: userRef,
                   });
                   setProgress(0);

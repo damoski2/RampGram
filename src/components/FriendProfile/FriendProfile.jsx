@@ -3,6 +3,8 @@ import style from "./FriendProfile.module.css";
 import { db, auth } from "../../config/firebase";
 import { Header } from "../imports";
 import firebase from "firebase";
+import { Chat } from '@material-ui/icons';
+import { Link } from 'react-router-dom'
 
 const FriendProfile = ({ post: { post }, user }) => {
   const { caption, imageUrl, profilePic, route, username, userID } = post;
@@ -61,7 +63,7 @@ const FriendProfile = ({ post: { post }, user }) => {
 
   //Load and set UniquePost
   useEffect(() => {
-    console.log(post);
+    //console.log(post);
     db.collection("posts")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
@@ -175,6 +177,9 @@ const FriendProfile = ({ post: { post }, user }) => {
                     Follow
                   </button>
                 )}
+                <Link to={`/chat/${post.userRef}`} style={{ color: 'grey' }} >
+                  <Chat style={{ marginLeft: '20' }} />
+                </Link>
               </div>
               <div className={style.followProf}>
                 <p>

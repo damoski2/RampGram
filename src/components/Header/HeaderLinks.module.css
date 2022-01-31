@@ -12,3 +12,20 @@
     object-fit: cover;
     align-items: center ;
 }
+
+.closeBtn{
+    position: relative;
+    transform: translate(620%, -760%);
+}
+
+@media(max-width: 490px){
+    .closeBtn{
+        transform: translate(450%, -670%);
+    }
+}
+
+@media(max-width: 370px){
+    .closeBtn{
+        transform: translate(300%, -670%);
+    }
+}
