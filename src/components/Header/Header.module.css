@@ -19,6 +19,7 @@
   
   .app_headerImage{
     object-fit: contain;
+    cursor: pointer;
   }
 
   .largeScreen .app_headerLink{
@@ -62,7 +63,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      
+
 
     }
 

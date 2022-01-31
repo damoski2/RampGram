@@ -28,6 +28,7 @@ const Header = ({ user }) => {
       {/*Header with links*/}
       <div className={style.app_header}>
         <img
+          onClick={()=> window.location.href="/" }
           className={style.app_headerImage}
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
           alt=""
