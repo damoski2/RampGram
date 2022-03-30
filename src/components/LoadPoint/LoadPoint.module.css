@@ -36,6 +36,7 @@
     border: .1px solid #DBDBDB;
     margin-bottom: 10px;
     height: 35px;
+    padding-left: 10px;
 }
 
 .app_Form form input:focus{
@@ -73,6 +74,16 @@
     margin: 0px 0;
     text-align: center;
     padding-bottom: 20px;
+}
+
+
+footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #fff;
+    padding: 3em 0;
+    text-align: center;
 }
 
 @media(max-width:992px){

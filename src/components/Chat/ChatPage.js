@@ -13,38 +13,39 @@ const ChatPage = (props) => {
 
   const [message, setMessage] = useState("");
   const [reciever, setReciever] = useState(null);
-  //const [users, setUsers] = useState([]);
   const [loggedUser, setLoggedUser] = useState("");
   const [loggedUsername, setLoggedUsername] = useState("");
   const [recieverName, setRecieverName] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const endOfMessagesRef = useRef(null)
 
-  //Load Reciever data
-  useEffect(() => {
-    const loadReciever = async () => {
-      const recieverRef = db.collection("users").doc(recieverId);
-      const doc = await recieverRef.get();
-      if (!doc.exists) {
-        console.log("No such document! ");
-      } else {
-        setReciever(doc.data());
-        setRecieverName(doc.data().username);
-      }
-    };
+  const loadReciever = async () => {
+    const recieverRef = db.collection("users").doc(recieverId);
+    const doc = await recieverRef.get();
+    if (!doc.exists) {
+      console.log("No such document! ");
+    } else {
+      setReciever(doc.data());
+      setRecieverName(doc.data().username);
+    }
+  };
 
-    loadReciever();
-  }, [recieverId]);
+    //Load Reciever data
+    useEffect(() => {
+      if(recieverId){
+        loadReciever();
+      }
+    }, [recieverId]);
 
   useEffect(() => {
     if (users.length > 0) {
       users.map((person) => {
-        //console.log(person['user'].username, user.displayName)
         if (
           person["user"].username.toString() === user.displayName.toString()
         ) {
           setLoggedUser(person.id);
           setLoggedUsername(person["user"].username);
+          return;
         }
       });
     }
@@ -69,8 +70,6 @@ const ChatPage = (props) => {
       });
     }
   }, [user, loggedUser]);
-
-  console.log(allMessages);
 
 
 
@@ -112,11 +111,11 @@ const ChatPage = (props) => {
       <Header user={user} />
       <form className={style.cnt} onSubmit={sendMessage}>
         <div className={style.messages}>
-          {allMessages&&allMessages.map((m)=> {
+          {allMessages&&allMessages.map((m, index)=> {
            return m.data.type == 'sent'?
-              <p className={style.send}>{m.data.message} <span>{m.data.timestamp? moment(message.timestamp).format('LT')  : '...'}</span></p>
+              <p key={index} className={style.send}>{m.data.message} <span>{m.data.timestamp? moment(message.timestamp).format('LT')  : '...'}</span></p>
               :
-              <p className={style.recieve}>{m.data.message}<span>{m.data.timestamp? moment(message.timestamp).format('LT')  : '...'}</span></p>
+              <p key={index} className={style.recieve}>{m.data.message}<span>{m.data.timestamp? moment(message.timestamp).format('LT')  : '...'}</span></p>
           })}
           <div stye={{ marginBottom: '50px' }} ref={endOfMessagesRef} ></div>
         </div>

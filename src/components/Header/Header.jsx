@@ -21,6 +21,7 @@ const Header = ({ user }) => {
   //sign Out and redirect
   const handleSignOut = () => {
     auth.signOut();
+    window.location.href="/"
   };
 
   return (

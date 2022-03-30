@@ -36,6 +36,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [userDoc, setUserDoc] = useState(null);
 
   useEffect(() => {
     db.collection("users")
@@ -50,6 +51,19 @@ function App() {
         );
       });
   }, []);
+
+  useEffect(() => {
+    if (users.length > 0) {
+      users.map((person) => {
+        if (
+          person["user"].username.toString() === user.displayName.toString()
+        ) {
+          setUserDoc(person);
+          return;
+        }
+      });
+    }
+  }, [users]);
 
   var routingfile = [];
   //Checking for Users auth state
@@ -171,7 +185,7 @@ function App() {
       <Route
         path="/profile"
         render={(props) => (
-          <UserProfile user={user} uniqueUserPost={uniqueUserPost} />
+          <UserProfile user={user} userDoc={userDoc} uniqueUserPost={uniqueUserPost} />
         )}
       />
 
@@ -228,7 +242,7 @@ function App() {
         render={(props) => users&&<ChatPage user={user} users={users} /> }
       />
 
-      <Route path="/edit/profile/:userId" render={(props)=> user&& <CreateProfile user={user} /> } />
+      <Route path="/edit/profile/:userId" render={(props)=> user&& <CreateProfile user={user} users={users} userDoc={userDoc} /> } />
 
       {user? (
         <Route

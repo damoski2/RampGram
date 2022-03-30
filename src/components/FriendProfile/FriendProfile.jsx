@@ -130,7 +130,7 @@ const FriendProfile = ({ post: { post }, user }) => {
           setFollowers(snapshot.docs.map((doc) => doc.data().by));
         });
     }
-  },[actualUser])
+  },[actualUser, toggleFollowBtn])
 
   useEffect(() => {
     if (user) {

@@ -1,3 +1,172 @@
+.mainDiv{
+    background-color: #fafafa;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.form{
+    min-width: 270px;
+    width: 40%;
+    margin: auto;
+    margin-top: 2em;
+    height: 100%;
+    background: #fff;
+    border: 1px solid #DBDBDB;
+    padding: 2em 4em;
+}
+
+.formInner{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.img__div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.img__div input{
+    z-index: 0;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.imgOption{
+    margin-top: .3em;
+}
+
+.imgOption p{
+    font-weight: bold;
+}
+
+.labelClick{
+    font-weight: bold;
+    color: #089bf0;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.inputDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2em;
+}
+
+.inputDiv input[type="text"]{
+    width: 70%;
+    padding: .5em;
+    border: 1px solid #DBDBDB;
+    border-radius: 5px;
+}
+
+
+.profImage{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+
 .editBtn{
     
+}
+
+.submitBtn{
+    width: fit-content;
+    margin-top: 2em;
+    background-color: #089bf0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    position: relative;
+    padding: .5em 1em;
+    right: -90%;
+}
+
+.imageUpload_progress{
+    width: 100%;
+}
+
+@media(max-width:1200px){
+    .formInner{
+        width: 80%;
+    }
+}
+
+
+@media(max-width:992px){
+    .formInner{
+        width: 100%;
+    }
+}
+
+@media(max-width: 768px){
+    .formInner{
+        width: 100%;
+    }
+
+    .img__div{
+        width: 90%;
+    }
+}
+
+@media(max-width: 650px){
+   
+    .formInner{
+        width: 100%;
+    }
+
+    .img__div{
+        width: 90%;
+    }
+}
+
+
+@media(max-width: 576px){
+
+    .form{
+        padding: 2em 2em;
+    }
+
+    .img__div{
+        width: 90%;
+    }
+
+    .submitBtn{
+        right: -80%;
+    }
+}
+
+
+@media(max-width: 450px){
+    .formInner{
+        width: 80%;
+    }
+
+    .img__div{
+        width: 80%;
+    }
+}
+
+@media (max-width: 411px) {
+
+    .formInner{
+        width: 90%;
+    }
+
+    .img__div{
+        width: 90%;
+    }
+}
+
+
+@media(max-width: 370px){
+ 
 }

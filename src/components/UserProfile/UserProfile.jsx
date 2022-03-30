@@ -11,7 +11,9 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
 const UserProfile = (props) => {
-  const { user, uniqueUserPost } = props;
+  const { user, uniqueUserPost, userDoc } = props;
+
+  console.log(userDoc)
 
   //States
   const [postsImages, setPostsImages] = useState([]);
@@ -79,10 +81,7 @@ const UserProfile = (props) => {
             "https://res.cloudinary.com/oyindacodes/image/upload/v1615390229/default_avatar_icon_rfujxi.png",
         });
     }
-  });
-
-  //Check if no profile image is specified for the user
-  useEffect(() => {});
+  },[user]);
 
   //Uploading Of profile Img
   const uploadProfileImage = (e) => {
@@ -257,7 +256,7 @@ const UserProfile = (props) => {
                   </p>
                 </div>
                 <b>{user.displayName}</b>
-                <p>Software Engineer and Developer</p>
+                <p>{userDoc?.user?.about? userDoc.user.about : 'Edit Profile to display about'}</p>
               </div>
             </div>
 
