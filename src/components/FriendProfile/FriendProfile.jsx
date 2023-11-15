@@ -5,6 +5,7 @@ import { Header } from "../imports";
 import firebase from "firebase";
 import { Chat } from '@material-ui/icons';
 import { Link } from 'react-router-dom'
+import defaultAvatar from '../../Images/default avatar icon.png'
 
 const FriendProfile = ({ post: { post }, user }) => {
   const { caption, imageUrl, profilePic, route, username, userID } = post;
@@ -164,7 +165,7 @@ const FriendProfile = ({ post: { post }, user }) => {
         <Header user={user} />
         <section className={style.mainCnt}>
           <div className={style.profStats}>
-            <img className={style.profileImg} src={profilePic} alt="" />
+            <img className={style.profileImg} src={profilePic? `${profilePic}` : `${defaultAvatar}`} alt="" />
             <div className={style.innerStats}>
               <div className={style.followStats}>
                 <h3>{post.username}</h3>

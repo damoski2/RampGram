@@ -56,7 +56,7 @@ function App() {
     if (users.length > 0) {
       users.map((person) => {
         if (
-          person["user"].username.toString() === user.displayName.toString()
+          person["user"].username.toString() === user?.displayName.toString()
         ) {
           setUserDoc(person);
           return;

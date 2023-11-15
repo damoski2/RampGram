@@ -69,7 +69,7 @@ const ChatPage = (props) => {
         );
       });
     }
-  }, [user, loggedUser]);
+  }, [user, loggedUser, recieverName]);
 
 
 
@@ -122,6 +122,7 @@ const ChatPage = (props) => {
         <div className={style.formInner}>
           <input
             type="text"
+            placeholder="Type a message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
